@@ -56,6 +56,33 @@ class ShellyConfigSections
         'dimmers' => '/settings/dimmer/',
     ];
 
+    // Gen2+: Komponenten-Präfix (vor dem ":") -> Kategorie
+    private const GEN2_CATEGORY = [
+        'wifi' => 'network',
+        'ble' => 'network',
+        'cloud' => 'connectivity',
+        'mqtt' => 'connectivity',
+        'ws' => 'connectivity',
+        'sys' => 'device',
+        'eth' => 'device',
+        'ui' => 'device',
+        'knx' => 'device',
+        'modbus' => 'device',
+    ];
+
+    // Gen1: Abschnitts-Schlüssel -> Kategorie
+    private const GEN1_CATEGORY = [
+        'wifi_sta' => 'network',
+        'wifi_sta1' => 'network',
+        'ap' => 'network',
+        'cloud' => 'connectivity',
+        'mqtt' => 'connectivity',
+        'coiot' => 'connectivity',
+        'general' => 'device',
+        'login' => 'device',
+        'sntp' => 'device',
+    ];
+
     public static function fromGen2(array $config): array
     {
         $sections = [];
@@ -63,9 +90,11 @@ class ShellyConfigSections
             if (!is_array($data)) {
                 continue;
             }
+            [$component] = self::splitKey((string)$key);
             $sections[] = [
                 'key' => (string)$key,
                 'label' => self::labelFromKey((string)$key),
+                'category' => self::GEN2_CATEGORY[strtolower($component)] ?? 'components',
                 'data' => $data,
             ];
         }
@@ -98,6 +127,7 @@ class ShellyConfigSections
                     $sections[] = [
                         'key' => $key . ':' . $idx,
                         'label' => self::labelFromKey($key) . ' ' . $idx,
+                        'category' => self::GEN1_CATEGORY[$key] ?? 'components',
                         'data' => $item,
                     ];
                 }
@@ -108,6 +138,7 @@ class ShellyConfigSections
                 $sections[] = [
                     'key' => $key,
                     'label' => self::labelFromKey($key),
+                    'category' => self::GEN1_CATEGORY[$key] ?? 'components',
                     'data' => $value,
                 ];
                 continue;
@@ -121,6 +152,7 @@ class ShellyConfigSections
         array_unshift($sections, [
             'key' => 'general',
             'label' => 'Allgemein / General',
+            'category' => 'device',
             'data' => $general,
         ]);
 

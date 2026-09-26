@@ -152,4 +152,59 @@ class ShellyClient
     {
         return $this->get('/reboot');
     }
+
+    // ---- Werksreset / Firmware / Authentifizierung ----
+
+    /** Werksreset – nur Gen2+ unterstützt einen HTTP/RPC-Aufruf hierfür. */
+    public function rpcFactoryReset(): ?array
+    {
+        return $this->post('/rpc/Shelly.FactoryReset');
+    }
+
+    public function rpcCheckForUpdate(): ?array
+    {
+        return $this->post('/rpc/Shelly.CheckForUpdate');
+    }
+
+    /** stage: stable | beta */
+    public function rpcUpdateFirmware(string $stage = 'stable'): ?array
+    {
+        return $this->post('/rpc/Shelly.Update', ['stage' => $stage]);
+    }
+
+    /**
+     * Aktiviert/ändert (Passwort angegeben) oder deaktiviert (Passwort = null) den Passwortschutz.
+     * $realm ist die Geräte-ID (z.B. shellyplus1mini-XXXXXXXXXXXX), Nutzer ist bei Gen2+ immer "admin".
+     */
+    public function rpcSetAuth(string $realm, ?string $password): ?array
+    {
+        $ha1 = $password !== null && $password !== '' ? hash('sha256', 'admin:' . $realm . ':' . $password) : null;
+        return $this->post('/rpc/Shelly.SetAuth', ['user' => 'admin', 'realm' => $realm, 'ha1' => $ha1]);
+    }
+
+    public function gen1OtaStatus(): ?array
+    {
+        return $this->get('/ota');
+    }
+
+    public function gen1OtaCheck(): ?array
+    {
+        return $this->get('/ota/check');
+    }
+
+    public function gen1OtaUpdate(): ?array
+    {
+        return $this->get('/ota?update=true');
+    }
+
+    /** Gerätename ändern. */
+    public function rpcSetDeviceName(string $name): ?array
+    {
+        return $this->rpc('Sys.SetConfig', ['config' => ['device' => ['name' => $name]]]);
+    }
+
+    public function gen1SetDeviceName(string $name): ?array
+    {
+        return $this->gen1SettingsSet('/settings', ['name' => $name]);
+    }
 }

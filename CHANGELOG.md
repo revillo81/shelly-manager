@@ -1,5 +1,14 @@
 # Versionshistorie / Changelog
 
+## 1.3.0 – Geräteeinstellungen wie in der offiziellen Shelly-App
+- Geräteeinstellungen sind jetzt wie in der offiziellen Shelly-Oberfläche in Kategorien gruppiert: Netzwerkeinstellungen, Verbindungseinstellungen, Geräteeinstellungen, Komponenten
+- Neuer Bereich „Schnellaktionen" auf der Einstellungsseite:
+  - Gerätename ändern
+  - Firmware: auf Updates prüfen und aktualisieren (Gen1 und Gen2/Gen3)
+  - Passwortschutz aktivieren/deaktivieren bzw. Passwort ändern (Gen2/Gen3 inkl. sicherer Schlüsselberechnung, Gen1 über die Login-Einstellungen)
+  - Werksreset (nur Gen2/Gen3 – bei Gen1/Classic-Geräten gibt es dafür keine API, es wird ein Hinweis auf den physischen Reset-Taster angezeigt)
+  - Neustart weiterhin direkt verfügbar
+
 ## 1.2.0 – Modernes Design & Live-Messwerte
 - Überarbeitetes, moderneres Erscheinungsbild (Farben, Schatten, Karten, Buttons, Toggle-Schalter)
 - Live-Messwerte direkt in der Baumansicht auf der Startseite (Leistung, Spannung, Strom, Temperatur, Luftfeuchtigkeit, Batterie), automatische Aktualisierung alle 20 Sekunden

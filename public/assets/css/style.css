@@ -204,6 +204,18 @@ input:focus, select:focus, textarea:focus {
 .save-msg.success { color: var(--success); }
 .save-msg.error { color: var(--danger); }
 
+.settings-category {
+    margin: 1.6rem 0 0.6rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--border);
+    font-size: 1.05rem;
+}
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+.quick-action { display: flex; flex-direction: column; gap: 0.4rem; }
+.quick-action-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.quick-action-row input[type="text"],
+.quick-action-row input[type="password"] {
+    padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius); flex: 1; min-width: 120px;
+}
+
 .script-list { list-style: none; padding: 0; }
 .script-list-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.7rem 0.9rem; margin-bottom: 0.55rem; background: #fafbfd; }
 .script-actions { margin-top: 0.6rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
