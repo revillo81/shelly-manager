@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($pageTitle ?? t('app_title')) ?> · <?= e(t('app_title')) ?></title>
-<link rel="stylesheet" href="<?= url('assets/css/style.css') ?>">
+<link rel="stylesheet" href="<?= asset_url('assets/css/style.css') ?>">
 </head>
 <body>
 <?php if (Auth::check()): ?>
@@ -15,10 +15,12 @@
     <div class="topbar-brand">
         <a href="<?= url('index.php') ?>"><span class="logo">⚡</span> <?= e(t('app_title')) ?></a>
     </div>
-    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="<?= e(t('nav_menu')) ?>">
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="<?= e(t('nav_menu')) ?>" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
     </button>
     <div class="topbar-menu" id="topbar-menu">
         <nav class="topbar-nav">

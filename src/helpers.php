@@ -31,6 +31,14 @@ function url(string $path): string
     return base_url() . '/' . ltrim($path, '/');
 }
 
+function asset_url(string $path): string
+{
+    $clean = ltrim($path, '/');
+    $file = __DIR__ . '/../public/' . $clean;
+    $v = file_exists($file) ? (string)filemtime($file) : '1';
+    return url($clean) . '?v=' . $v;
+}
+
 function redirect(string $path): void
 {
     header('Location: ' . url($path));

@@ -101,6 +101,6 @@ window.i18n = {
     auth_password_required: <?= json_encode(t('auth_password_required')) ?>
 };
 </script>
-<script src="assets/js/settings.js"></script>
+<script src="<?= asset_url('assets/js/settings.js') ?>"></script>
 
 <?php require __DIR__ . '/../templates/footer.php'; ?>

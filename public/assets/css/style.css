@@ -39,12 +39,24 @@ h3 { font-size: 0.95rem; margin: 1rem 0 0.5rem; color: var(--muted); }
 .topbar {
     display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(135deg, #1c1f2e 0%, #262b40 100%);
-    color: #fff; padding: 0.7rem 1.4rem; flex-wrap: wrap; gap: 0.6rem;
+    color: #fff; padding: 0.7rem 1.4rem; gap: 1rem;
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 .topbar-brand a { color: #fff; font-weight: 700; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem; }
 .logo { font-size: 1.3rem; }
-.nav-toggle { display: none; }
+.nav-toggle {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    border-radius: 8px;
+    padding: 7px 9px;
+    cursor: pointer;
+    line-height: 0;
+}
+.nav-toggle:active { background: rgba(255, 255, 255, 0.22); }
 .topbar-menu { display: flex; align-items: center; gap: 1.2rem; }
 .topbar-nav a {
     color: #c9cdda; margin-right: 0.3rem; padding: 0.4rem 0.7rem; border-radius: 8px; font-size: 0.92rem;
@@ -117,11 +129,12 @@ input:focus, select:focus, textarea:focus {
 }
 .tree-device:hover { box-shadow: var(--shadow-hover); border-color: var(--border); }
 .tree-device-link { display: flex; align-items: center; gap: 0.6rem; color: var(--text); flex: 1; min-width: 0; }
-.device-icon { font-size: 1.3rem; }
+.device-icon { font-size: 1.3rem; flex-shrink: 0; }
 .device-info { display: flex; flex-direction: column; min-width: 0; }
-.device-name { font-weight: 600; }
-.device-meta { color: var(--muted); font-size: 0.8rem; }
+.device-name { font-weight: 600; word-break: break-word; overflow-wrap: anywhere; }
+.device-meta { color: var(--muted); font-size: 0.8rem; word-break: break-all; }
 .device-metrics { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.device-metrics:empty { display: none; }
 
 .metric-chip {
     background: var(--primary-light); color: #9a3412; border-radius: 999px; padding: 0.15rem 0.55rem;
@@ -238,51 +251,128 @@ textarea.script-code {
 @media (max-width: 800px) {
     body { -webkit-tap-highlight-color: transparent; text-size-adjust: 100%; }
 
-    .content { padding: 1rem 0.8rem calc(1.2rem + env(safe-area-inset-bottom)); }
+    .content { padding: 0.8rem 0.6rem calc(1.2rem + env(safe-area-inset-bottom)); }
 
     /* Topbar: Hamburger-Menü */
     .topbar {
-        flex-wrap: nowrap; position: relative;
-        padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-top));
+        position: relative;
+        padding: 0.65rem 0.9rem calc(0.65rem + env(safe-area-inset-top));
     }
     .nav-toggle {
-        display: inline-flex; flex-direction: column; justify-content: center; align-items: center;
-        gap: 4px; width: 44px; height: 44px; background: none; border: none; cursor: pointer; padding: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        min-width: 44px;
     }
-    .nav-toggle-bar { display: block; height: 2px; width: 22px; background: #fff; border-radius: 2px; }
     .topbar-menu {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: stretch; gap: 0.4rem;
-        background: #1c1f2e; padding: 0.6rem 1rem calc(0.8rem + env(safe-area-inset-bottom));
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 50;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #1c1f2e;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.6rem 1rem calc(0.9rem + env(safe-area-inset-bottom));
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.4rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        z-index: 1000;
     }
     .topbar-menu.open { display: flex; }
-    .topbar-nav { display: flex; flex-direction: column; }
-    .topbar-nav a { margin: 0; padding: 0.7rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .topbar-right { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; }
-    .lang-switch a { padding: 0.4rem 0.5rem; }
-    .btn-link { padding: 0.5rem 0.8rem; }
+    .topbar-nav { display: flex; flex-direction: column; width: 100%; }
+    .topbar-nav a {
+        display: block;
+        margin: 0;
+        padding: 0.75rem 0.4rem;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .topbar-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.6rem;
+        width: 100%;
+    }
+    .lang-switch a { padding: 0.35rem 0.6rem; font-size: 0.95rem; }
+    .btn-link { padding: 0.5rem 0.9rem; }
 
-    /* Touch-Ziele */
+    /* Touch-Ziele & Inputs (16px verhindert iOS-Zoom) */
     .btn { min-height: 44px; }
     .btn-small { min-height: 40px; }
     .btn-link-small { padding: 0.4rem; }
-    .tree-toggle { padding: 0.3rem; }
+    .tree-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.8rem;
+        height: 1.8rem;
+        font-size: 1.2rem;
+    }
     input[type=text], input[type=password], input[type=number], select, textarea { font-size: 16px; }
+
+    /* Gerätebaum: Sauberes 2-Zeilen-Grid pro Gerät */
+    .device-tree ul { padding-left: 0.4rem; }
+    .tree-device {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "link badge"
+            "metrics metrics";
+        gap: 0.45rem 0.6rem;
+        align-items: center;
+        padding: 0.75rem 0.85rem;
+    }
+    .tree-device-link {
+        grid-area: link;
+        min-width: 0;
+    }
+    .tree-device .badge {
+        grid-area: badge;
+        justify-self: end;
+        align-self: start;
+        margin-top: 0.15rem;
+    }
+    .device-metrics {
+        grid-area: metrics;
+        width: 100%;
+        display: flex;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+        padding-top: 0.35rem;
+        border-top: 1px dashed #f0f2f5;
+    }
+    .device-metrics:empty {
+        display: none;
+    }
+
+    /* Page-Head & Gruppen-Formular */
+    .page-head { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+    .page-head form.inline-form {
+        display: flex;
+        width: 100%;
+        margin: 0;
+        gap: 0.5rem;
+    }
+    .page-head form.inline-form input[type=text] {
+        flex: 1;
+        min-width: 0;
+        margin-top: 0;
+    }
+    .page-head form.inline-form .btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
 
     /* Login */
     .login-wrapper { min-height: 100dvh; }
     .login-box { width: 100%; max-width: 340px; }
 
-    /* Gerätebaum */
-    .tree-device { flex-wrap: wrap; }
-    .device-metrics { flex-basis: 100%; order: 3; }
-
-    /* Formulare */
+    /* Formulare & Scan */
     .inline-form { display: flex; flex-wrap: wrap; width: 100%; }
-    .inline-form input[type=text] { flex: 1 1 100%; }
-
-    /* Scan-Ergebnisse */
     .scan-result-row { flex-wrap: wrap; }
 
     /* Karten & Steuerung */

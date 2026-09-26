@@ -62,6 +62,6 @@ window.i18n = {
     confirm_delete: <?= json_encode(t('confirm_delete')) ?>
 };
 </script>
-<script src="assets/js/scripts.js"></script>
+<script src="<?= asset_url('assets/js/scripts.js') ?>"></script>
 
 <?php require __DIR__ . '/../templates/footer.php'; ?>
