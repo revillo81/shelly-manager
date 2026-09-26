@@ -3,7 +3,7 @@ require __DIR__ . '/../../src/bootstrap.php';
 Auth::requireLogin();
 
 if (!is_post()) {
-    redirect('index.php');
+    redirect('../index.php');
 }
 Csrf::verifyOrFail();
 
@@ -27,4 +27,4 @@ if ($action === 'create') {
     }
 }
 
-redirect('index.php');
+redirect('../index.php');
