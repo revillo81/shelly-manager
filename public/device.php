@@ -46,17 +46,17 @@ $pageTitle = $device['name'];
 require __DIR__ . '/../templates/header.php';
 require __DIR__ . '/../templates/tree_functions.php';
 ?>
-<p><a href="index.php">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
+<p><a href="index.php" class="back-link">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
 <h1><?= e($device['name']) ?> <?= status_badge($device) ?? '' ?></h1>
 
-<p class="device-subnav">
-    <a href="device.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('control_title')) ?></a>
+<div class="device-subnav">
+    <a href="device.php?id=<?= (int)$device['id'] ?>" class="btn btn-small btn-active"><?= e(t('control_title')) ?></a>
     <a href="device_settings.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('device_settings_title')) ?></a>
     <?php if ((int)$device['generation'] >= 2): ?>
         <a href="scripts.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('scripts_title')) ?></a>
     <?php endif; ?>
     <button type="button" id="btn-reboot" class="btn btn-small btn-danger" data-device-id="<?= (int)$device['id'] ?>"><?= e(t('reboot')) ?></button>
-</p>
+</div>
 
 <div class="two-col">
     <section class="card">
@@ -75,13 +75,16 @@ require __DIR__ . '/../templates/tree_functions.php';
                     <?php endforeach; ?>
                 </select>
             </label>
-            <p><strong><?= e(t('device_ip')) ?>:</strong> <?= e($device['ip']) ?></p>
-            <p><strong><?= e(t('device_mac')) ?>:</strong> <?= e($device['mac'] ?: '–') ?></p>
-            <p><strong><?= e(t('device_type')) ?>:</strong> <?= e($device['type'] ?: '–') ?></p>
-            <p><strong><?= e(t('device_model')) ?>:</strong> <?= e($device['model'] ?: '–') ?></p>
-            <p><strong><?= e(t('device_generation')) ?>:</strong> <?= (int)$device['generation'] ?></p>
-            <p><strong><?= e(t('device_firmware')) ?>:</strong> <?= e($device['firmware'] ?: '–') ?></p>
-            <p><strong><?= e(t('device_auth')) ?>:</strong> <?= $device['auth_enabled'] ? e(t('yes')) : e(t('no')) ?></p>
+
+            <div class="device-props">
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_ip')) ?></span><span class="prop-val"><?= e($device['ip']) ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_mac')) ?></span><span class="prop-val"><?= e($device['mac'] ?: '–') ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_type')) ?></span><span class="prop-val"><?= e($device['type'] ?: '–') ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_model')) ?></span><span class="prop-val"><?= e($device['model'] ?: '–') ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_generation')) ?></span><span class="prop-val"><?= (int)$device['generation'] ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_firmware')) ?></span><span class="prop-val"><?= e($device['firmware'] ?: '–') ?></span></div>
+                <div class="prop-row"><span class="prop-key"><?= e(t('device_auth')) ?></span><span class="prop-val"><?= $device['auth_enabled'] ? e(t('yes')) : e(t('no')) ?></span></div>
+            </div>
 
             <?php if ($device['auth_enabled']): ?>
             <label><?= e(t('device_username')) ?>
@@ -95,10 +98,12 @@ require __DIR__ . '/../templates/tree_functions.php';
             <label><?= e(t('device_notes')) ?>
                 <textarea name="notes" rows="3"><?= e($device['notes']) ?></textarea>
             </label>
-            <button type="submit" class="btn btn-primary"><?= e(t('save')) ?></button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><?= e(t('save')) ?></button>
+            </div>
         </form>
 
-        <form method="post" onsubmit="return confirm('<?= e(t('confirm_delete')) ?>');" class="inline-form">
+        <form method="post" onsubmit="return confirm('<?= e(t('confirm_delete')) ?>');" class="delete-device-form">
             <?= Csrf::field() ?>
             <input type="hidden" name="action" value="delete">
             <button type="submit" class="btn btn-danger"><?= e(t('delete')) ?></button>

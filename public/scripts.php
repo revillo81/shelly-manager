@@ -17,14 +17,14 @@ if ((int)$device['generation'] < 2) {
 $pageTitle = $device['name'] . ' – ' . t('scripts_title');
 require __DIR__ . '/../templates/header.php';
 ?>
-<p><a href="index.php">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
+<p><a href="index.php" class="back-link">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
 <h1><?= e($device['name']) ?> – <?= e(t('scripts_title')) ?></h1>
 
-<p class="device-subnav">
+<div class="device-subnav">
     <a href="device.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('control_title')) ?></a>
     <a href="device_settings.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('device_settings_title')) ?></a>
     <a href="scripts.php?id=<?= (int)$device['id'] ?>" class="btn btn-small btn-active"><?= e(t('scripts_title')) ?></a>
-</p>
+</div>
 
 <div class="two-col">
     <section class="card">

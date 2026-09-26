@@ -12,16 +12,16 @@ if (!$device) {
 $pageTitle = $device['name'] . ' – ' . t('device_settings_title');
 require __DIR__ . '/../templates/header.php';
 ?>
-<p><a href="index.php">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
+<p><a href="index.php" class="back-link">&larr; <?= e(t('back_to_dashboard')) ?></a></p>
 <h1><?= e($device['name']) ?> – <?= e(t('device_settings_title')) ?></h1>
 
-<p class="device-subnav">
+<div class="device-subnav">
     <a href="device.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('control_title')) ?></a>
     <a href="device_settings.php?id=<?= (int)$device['id'] ?>" class="btn btn-small btn-active"><?= e(t('device_settings_title')) ?></a>
     <?php if ((int)$device['generation'] >= 2): ?>
         <a href="scripts.php?id=<?= (int)$device['id'] ?>" class="btn btn-small"><?= e(t('scripts_title')) ?></a>
     <?php endif; ?>
-</p>
+</div>
 
 <p class="hint"><?= e(t('device_settings_hint')) ?></p>
 

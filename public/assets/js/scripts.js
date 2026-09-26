@@ -99,10 +99,19 @@ function scriptAction(action, scriptId, callback) {
 
 function openEditor(script) {
     var editor = document.getElementById('script-editor');
-    editor.innerHTML = '<p><em>' + (script.name || ('Script #' + script.id)) + '</em></p><textarea class="script-code" rows="20"></textarea><br><button type="button" class="btn btn-primary" id="btn-save-code">' + window.i18n.save + '</button> <span class="save-msg" id="code-save-msg"></span>';
+    editor.innerHTML = '<p><strong>' + (script.name || ('Script #' + script.id)) + '</strong></p>' +
+        '<textarea class="script-code" rows="18"></textarea>' +
+        '<div class="editor-actions">' +
+        '<button type="button" class="btn btn-primary" id="btn-save-code">' + window.i18n.save + '</button>' +
+        '<span class="save-msg" id="code-save-msg"></span>' +
+        '</div>';
 
     var textarea = editor.querySelector('.script-code');
     textarea.value = '';
+
+    setTimeout(function () {
+        editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
 
     fetch('ajax/script_code.php?id=' + window.deviceId + '&script_id=' + script.id)
         .then(function (r) { return r.json(); })

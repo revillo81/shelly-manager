@@ -1,5 +1,16 @@
 # Versionshistorie / Changelog
 
+## 1.4.0 – Vollständige Mobil-Kompatibilität & Detailseiten-Optimierung
+- Alle Detailseiten (Gerätesteuerung, Geräteeinstellungen, Skripte, Einstellungen, Gerät hinzufügen) vollständig für Smartphones und kleine Bildschirme optimiert
+- Responsive Gerätenavigation (Subnav): Touch-optimierte Buttons in sauberem 2-Spalten-Raster
+- Live-Messwerte auf der Geräteseite im gleichmäßigen 2-Spalten-Raster für kompakte Übersicht auf jedem Smartphone
+- Geräteeigenschaften in sauberer zweispaltiger Eigenschaftstabelle dargestellt
+- Steuerungskanäle (Schalter & Rollläden) mit voller Breite und großen Touch-Flächen
+- Schnellaktionen auf der Einstellungsseite (Umbenennen, Firmware, Authentifizierung, Reset) mit für Fingerbedienung optimierten Eingabefeldern und Schaltflächen
+- Skript-Verwaltung: 2-Spalten-Aktionsbuttons und automatisches Weiterscrollen zum Code-Editor bei Auswahl eines Skripts
+- Dynamisches Cache-Busting für CSS und JS (`?v=filemtime`) zur sofortigen Aktualisierung auf Mobilgeräten ohne manuelles Leeren des Browser-Caches
+- Modernes SVG-Hamburger-Menü für zuverlässige Anzeige auf allen mobilen Browsern (iOS Safari, Android Chrome)
+
 ## 1.3.0 – Geräteeinstellungen wie in der offiziellen Shelly-App
 - Geräteeinstellungen sind jetzt wie in der offiziellen Shelly-Oberfläche in Kategorien gruppiert: Netzwerkeinstellungen, Verbindungseinstellungen, Geräteeinstellungen, Komponenten
 - Neuer Bereich „Schnellaktionen" auf der Einstellungsseite:
