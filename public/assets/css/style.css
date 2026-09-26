@@ -44,6 +44,8 @@ h3 { font-size: 0.95rem; margin: 1rem 0 0.5rem; color: var(--muted); }
 }
 .topbar-brand a { color: #fff; font-weight: 700; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem; }
 .logo { font-size: 1.3rem; }
+.nav-toggle { display: none; }
+.topbar-menu { display: flex; align-items: center; gap: 1.2rem; }
 .topbar-nav a {
     color: #c9cdda; margin-right: 0.3rem; padding: 0.4rem 0.7rem; border-radius: 8px; font-size: 0.92rem;
     transition: background 0.15s, color 0.15s;
@@ -230,3 +232,68 @@ textarea.script-code {
 .help-card h2:first-child { margin-top: 0; }
 
 .site-footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.8rem; }
+
+/* ---- Mobile / Responsive ---- */
+
+@media (max-width: 800px) {
+    body { -webkit-tap-highlight-color: transparent; text-size-adjust: 100%; }
+
+    .content { padding: 1rem 0.8rem calc(1.2rem + env(safe-area-inset-bottom)); }
+
+    /* Topbar: Hamburger-Menü */
+    .topbar {
+        flex-wrap: nowrap; position: relative;
+        padding: 0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-top));
+    }
+    .nav-toggle {
+        display: inline-flex; flex-direction: column; justify-content: center; align-items: center;
+        gap: 4px; width: 44px; height: 44px; background: none; border: none; cursor: pointer; padding: 8px;
+    }
+    .nav-toggle-bar { display: block; height: 2px; width: 22px; background: #fff; border-radius: 2px; }
+    .topbar-menu {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: stretch; gap: 0.4rem;
+        background: #1c1f2e; padding: 0.6rem 1rem calc(0.8rem + env(safe-area-inset-bottom));
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 50;
+    }
+    .topbar-menu.open { display: flex; }
+    .topbar-nav { display: flex; flex-direction: column; }
+    .topbar-nav a { margin: 0; padding: 0.7rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .topbar-right { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; }
+    .lang-switch a { padding: 0.4rem 0.5rem; }
+    .btn-link { padding: 0.5rem 0.8rem; }
+
+    /* Touch-Ziele */
+    .btn { min-height: 44px; }
+    .btn-small { min-height: 40px; }
+    .btn-link-small { padding: 0.4rem; }
+    .tree-toggle { padding: 0.3rem; }
+    input[type=text], input[type=password], input[type=number], select, textarea { font-size: 16px; }
+
+    /* Login */
+    .login-wrapper { min-height: 100dvh; }
+    .login-box { width: 100%; max-width: 340px; }
+
+    /* Gerätebaum */
+    .tree-device { flex-wrap: wrap; }
+    .device-metrics { flex-basis: 100%; order: 3; }
+
+    /* Formulare */
+    .inline-form { display: flex; flex-wrap: wrap; width: 100%; }
+    .inline-form input[type=text] { flex: 1 1 100%; }
+
+    /* Scan-Ergebnisse */
+    .scan-result-row { flex-wrap: wrap; }
+
+    /* Karten & Steuerung */
+    .card { padding: 1rem 1.1rem; }
+    .two-col { gap: 1rem; }
+    .metric-card { flex: 1 1 auto; min-width: 80px; }
+    .control-channel { min-width: 100%; }
+    .switch-toggle { width: 52px; height: 30px; }
+    .switch-slider::before { height: 24px; width: 24px; left: 3px; top: 3px; }
+    .switch-toggle input:checked + .switch-slider::before { transform: translateX(22px); }
+
+    h1 { font-size: 1.3rem; }
+    .site-footer { padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)); }
+}

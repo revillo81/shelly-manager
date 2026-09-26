@@ -1,10 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
+    initNavToggle();
     initTreeToggle();
     initScanForm();
     initDeviceControl();
     initReboot();
     initDashboardMetrics();
 });
+
+function initNavToggle() {
+    var btn = document.getElementById('nav-toggle');
+    var menu = document.getElementById('topbar-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function () {
+        menu.classList.toggle('open');
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+            menu.classList.remove('open');
+        });
+    });
+}
 
 function initReboot() {
     var btn = document.getElementById('btn-reboot');

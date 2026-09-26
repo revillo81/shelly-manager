@@ -15,20 +15,27 @@
     <div class="topbar-brand">
         <a href="<?= url('index.php') ?>"><span class="logo">⚡</span> <?= e(t('app_title')) ?></a>
     </div>
-    <nav class="topbar-nav">
-        <a href="<?= url('index.php') ?>"><?= e(t('nav_dashboard')) ?></a>
-        <a href="<?= url('add_device.php') ?>"><?= e(t('nav_add_device')) ?></a>
-        <a href="<?= url('settings.php') ?>"><?= e(t('nav_settings')) ?></a>
-        <a href="<?= url('help.php') ?>"><?= e(t('nav_help')) ?></a>
-        <a href="<?= url('changelog.php') ?>"><?= e(t('nav_changelog')) ?></a>
-    </nav>
-    <div class="topbar-right">
-        <span class="lang-switch">
-            <a href="?lang=de" class="<?= Lang::current() === 'de' ? 'active' : '' ?>">DE</a> /
-            <a href="?lang=en" class="<?= Lang::current() === 'en' ? 'active' : '' ?>">EN</a>
-        </span>
-        <span class="user"><?= e(Auth::username()) ?></span>
-        <a href="<?= url('logout.php') ?>" class="btn-link"><?= e(t('nav_logout')) ?></a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="<?= e(t('nav_menu')) ?>">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="topbar-menu" id="topbar-menu">
+        <nav class="topbar-nav">
+            <a href="<?= url('index.php') ?>"><?= e(t('nav_dashboard')) ?></a>
+            <a href="<?= url('add_device.php') ?>"><?= e(t('nav_add_device')) ?></a>
+            <a href="<?= url('settings.php') ?>"><?= e(t('nav_settings')) ?></a>
+            <a href="<?= url('help.php') ?>"><?= e(t('nav_help')) ?></a>
+            <a href="<?= url('changelog.php') ?>"><?= e(t('nav_changelog')) ?></a>
+        </nav>
+        <div class="topbar-right">
+            <span class="lang-switch">
+                <a href="?lang=de" class="<?= Lang::current() === 'de' ? 'active' : '' ?>">DE</a> /
+                <a href="?lang=en" class="<?= Lang::current() === 'en' ? 'active' : '' ?>">EN</a>
+            </span>
+            <span class="user"><?= e(Auth::username()) ?></span>
+            <a href="<?= url('logout.php') ?>" class="btn-link"><?= e(t('nav_logout')) ?></a>
+        </div>
     </div>
 </header>
 <?php endif; ?>

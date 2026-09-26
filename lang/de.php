@@ -7,6 +7,7 @@ return [
     'nav_help' => 'Hilfe',
     'nav_changelog' => 'Versionshistorie',
     'nav_logout' => 'Abmelden',
+    'nav_menu' => 'Menü',
     'login_title' => 'Anmeldung',
     'login_username' => 'Benutzername',
     'login_password' => 'Passwort',
