@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initScanForm();
     initDeviceControl();
     initReboot();
+    initDashboardMetrics();
 });
 
 function initReboot() {
@@ -86,6 +87,55 @@ function renderScanResults(devices, container) {
     });
 }
 
+/* ---- Dashboard: Live-Metriken für alle Geräte im Baum ---- */
+
+var dashboardMetricsTimer = null;
+
+function initDashboardMetrics() {
+    var tree = document.getElementById('device-tree');
+    if (!tree) return;
+
+    loadDashboardMetrics();
+    dashboardMetricsTimer = setInterval(loadDashboardMetrics, 20000);
+}
+
+function loadDashboardMetrics() {
+    fetch('ajax/dashboard_metrics.php')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var metrics = data.metrics || {};
+            Object.keys(metrics).forEach(function (id) {
+                applyDeviceMetrics(id, metrics[id]);
+            });
+        })
+        .catch(function () { /* letzte bekannte Werte beibehalten */ });
+}
+
+function applyDeviceMetrics(id, info) {
+    var badge = document.querySelector('[data-status-badge="' + id + '"]');
+    if (badge) {
+        var online = !!info.online;
+        badge.classList.remove('badge-online', 'badge-offline', 'badge-unknown');
+        badge.classList.add(online ? 'badge-online' : 'badge-offline');
+        badge.textContent = online ? window.i18n.status_online : window.i18n.status_offline;
+    }
+
+    var metricsEl = document.querySelector('[data-metrics-for="' + id + '"]');
+    if (metricsEl) {
+        metricsEl.innerHTML = formatMetricsInline(info.metrics || []);
+    }
+}
+
+function formatMetricsInline(metrics) {
+    if (!metrics || metrics.length === 0) return '';
+    return metrics.map(function (m) {
+        return '<span class="metric-chip" title="' + (window.metricLabels[m.key] || m.key) + '">' +
+            m.icon + ' ' + m.value + m.unit + '</span>';
+    }).join('');
+}
+
+/* ---- Gerätedetail: Steuerung + Live-Status ---- */
+
 function initDeviceControl() {
     var btn = document.getElementById('btn-refresh-status');
     if (!btn) return;
@@ -102,13 +152,20 @@ function loadStatus() {
         .then(function (r) { return r.json(); })
         .then(function (data) {
             var liveEl = document.getElementById('live-status');
+            var metricsPanel = document.getElementById('metrics-panel');
             var panel = document.getElementById('control-panel');
-            liveEl.innerHTML = '<strong>' + (data.online ? window.i18n.status_online : window.i18n.status_offline) + '</strong>';
+
+            liveEl.innerHTML = '<span class="status-dot ' + (data.online ? 'online' : 'offline') + '"></span>' +
+                '<strong>' + (data.online ? window.i18n.status_online : window.i18n.status_offline) + '</strong>';
+
+            metricsPanel.innerHTML = '';
             panel.innerHTML = '';
 
             if (!data.online || !data.status) {
                 return;
             }
+
+            renderMetricCards(data.metrics || [], metricsPanel);
 
             if (window.deviceGeneration >= 2) {
                 renderGen2Controls(data.status, panel);
@@ -118,22 +175,38 @@ function loadStatus() {
         });
 }
 
+function renderMetricCards(metrics, container) {
+    if (!metrics || metrics.length === 0) return;
+    metrics.forEach(function (m) {
+        var card = document.createElement('div');
+        card.className = 'metric-card';
+        card.innerHTML = '<span class="metric-icon">' + m.icon + '</span>' +
+            '<span class="metric-value">' + m.value + '<small>' + m.unit + '</small></span>' +
+            '<span class="metric-label">' + (window.metricLabels[m.key] || m.key) + '</span>';
+        container.appendChild(card);
+    });
+}
+
 function renderGen1Controls(status, panel) {
     (status.relays || []).forEach(function (relay, idx) {
         var div = document.createElement('div');
         div.className = 'control-channel';
-        div.innerHTML = '<div>' + window.i18n.channel + ' ' + idx + ' (' + (relay.ison ? 'ON' : 'OFF') + ')</div>';
-        div.appendChild(makeButton(window.i18n.turn_on, function () { sendControl('switch', idx, 'on'); }));
-        div.appendChild(makeButton(window.i18n.turn_off, function () { sendControl('switch', idx, 'off'); }));
+        div.appendChild(makeChannelHeader(window.i18n.channel + ' ' + idx));
+        div.appendChild(makeToggle(!!relay.ison, function (nextOn) {
+            sendControl('switch', idx, nextOn ? 'on' : 'off');
+        }));
         panel.appendChild(div);
     });
     (status.rollers || []).forEach(function (roller, idx) {
         var div = document.createElement('div');
         div.className = 'control-channel';
-        div.innerHTML = '<div>' + window.i18n.channel + ' ' + idx + ' (' + (roller.state || '') + ')</div>';
-        div.appendChild(makeButton(window.i18n.open, function () { sendControl('roller', idx, 'open'); }));
-        div.appendChild(makeButton(window.i18n.close, function () { sendControl('roller', idx, 'close'); }));
-        div.appendChild(makeButton(window.i18n.stop, function () { sendControl('roller', idx, 'stop'); }));
+        div.appendChild(makeChannelHeader(window.i18n.channel + ' ' + idx + ' (' + (roller.state || '') + ')'));
+        var row = document.createElement('div');
+        row.className = 'button-row';
+        row.appendChild(makeButton(window.i18n.open, function () { sendControl('roller', idx, 'open'); }));
+        row.appendChild(makeButton(window.i18n.close, function () { sendControl('roller', idx, 'close'); }));
+        row.appendChild(makeButton(window.i18n.stop, function () { sendControl('roller', idx, 'stop'); }));
+        div.appendChild(row);
         panel.appendChild(div);
     });
 }
@@ -146,9 +219,10 @@ function renderGen2Controls(status, panel) {
             var sw = status[key];
             var div = document.createElement('div');
             div.className = 'control-channel';
-            div.innerHTML = '<div>' + window.i18n.channel + ' ' + idx + ' (' + (sw.output ? 'ON' : 'OFF') + ')</div>';
-            div.appendChild(makeButton(window.i18n.turn_on, function () { sendControl('switch', idx, 'on'); }));
-            div.appendChild(makeButton(window.i18n.turn_off, function () { sendControl('switch', idx, 'off'); }));
+            div.appendChild(makeChannelHeader(window.i18n.channel + ' ' + idx));
+            div.appendChild(makeToggle(!!sw.output, function (nextOn) {
+                sendControl('switch', idx, nextOn ? 'on' : 'off');
+            }));
             panel.appendChild(div);
         }
         var coverMatch = key.match(/^cover:(\d+)$/);
@@ -157,13 +231,40 @@ function renderGen2Controls(status, panel) {
             var cover = status[key];
             var cdiv = document.createElement('div');
             cdiv.className = 'control-channel';
-            cdiv.innerHTML = '<div>' + window.i18n.channel + ' ' + cidx + ' (' + (cover.state || '') + ')</div>';
-            cdiv.appendChild(makeButton(window.i18n.open, function () { sendControl('roller', cidx, 'open'); }));
-            cdiv.appendChild(makeButton(window.i18n.close, function () { sendControl('roller', cidx, 'close'); }));
-            cdiv.appendChild(makeButton(window.i18n.stop, function () { sendControl('roller', cidx, 'stop'); }));
+            cdiv.appendChild(makeChannelHeader(window.i18n.channel + ' ' + cidx + ' (' + (cover.state || '') + ')'));
+            var row = document.createElement('div');
+            row.className = 'button-row';
+            row.appendChild(makeButton(window.i18n.open, function () { sendControl('roller', cidx, 'open'); }));
+            row.appendChild(makeButton(window.i18n.close, function () { sendControl('roller', cidx, 'close'); }));
+            row.appendChild(makeButton(window.i18n.stop, function () { sendControl('roller', cidx, 'stop'); }));
+            cdiv.appendChild(row);
             panel.appendChild(cdiv);
         }
     });
+}
+
+function makeChannelHeader(text) {
+    var h = document.createElement('div');
+    h.className = 'control-channel-title';
+    h.textContent = text;
+    return h;
+}
+
+function makeToggle(isOn, onChange) {
+    var label = document.createElement('label');
+    label.className = 'switch-toggle';
+
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = isOn;
+    input.addEventListener('change', function () { onChange(input.checked); });
+
+    var slider = document.createElement('span');
+    slider.className = 'switch-slider';
+
+    label.appendChild(input);
+    label.appendChild(slider);
+    return label;
 }
 
 function makeButton(label, onClick) {

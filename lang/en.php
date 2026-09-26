@@ -114,4 +114,11 @@ return [
     'scripts_stop' => 'Stop',
     'scripts_enable' => 'Enable',
     'scripts_disable' => 'Disable',
+    'metric_power' => 'Power',
+    'metric_voltage' => 'Voltage',
+    'metric_current' => 'Current',
+    'metric_temperature' => 'Temperature',
+    'metric_humidity' => 'Humidity',
+    'metric_battery' => 'Battery',
+    'live_data' => 'Live data',
 ];

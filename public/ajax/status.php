@@ -20,4 +20,5 @@ json_response([
     'online' => $online,
     'status' => $status,
     'generation' => (int)$device['generation'],
+    'metrics' => ShellyMetrics::summarize($status, (int)$device['generation']),
 ]);

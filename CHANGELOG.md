@@ -1,5 +1,12 @@
 # Versionshistorie / Changelog
 
+## 1.2.0 – Modernes Design & Live-Messwerte
+- Überarbeitetes, moderneres Erscheinungsbild (Farben, Schatten, Karten, Buttons, Toggle-Schalter)
+- Live-Messwerte direkt in der Baumansicht auf der Startseite (Leistung, Spannung, Strom, Temperatur, Luftfeuchtigkeit, Batterie), automatische Aktualisierung alle 20 Sekunden
+- Geräte-Detailseite zeigt Live-Messwerte als übersichtliche Kacheln statt nur als Rohdaten
+- Schalter werden als moderne Toggle-Switches dargestellt statt als einfache Ein/Aus-Buttons
+- Paralleler Abruf der Live-Werte aller Geräte für ein performantes Dashboard auch bei vielen Geräten
+
 ## 1.1.0 – Erweiterte Geräteeinstellungen
 - Neue Seite „Geräteeinstellungen“: alle vom Gerät gemeldeten Konfigurationsabschnitte (WLAN, MQTT, Cloud, Bluetooth, Relais/Schalter, Rollladen, Eingänge, System usw.) können direkt bearbeitet und gespeichert werden
 - Neue Seite „Skripte“ (Gen2/Gen3): Skripte auflisten, erstellen, löschen, starten/stoppen, aktivieren/deaktivieren sowie den Skriptcode direkt im Browser bearbeiten

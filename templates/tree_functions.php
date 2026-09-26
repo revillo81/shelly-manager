@@ -30,11 +30,14 @@ function render_tree_device(array $device): void
 {
     ?>
     <li class="tree-device" data-device-id="<?= (int)$device['id'] ?>">
-        <a href="device.php?id=<?= (int)$device['id'] ?>">
+        <a href="device.php?id=<?= (int)$device['id'] ?>" class="tree-device-link">
             <span class="device-icon"><?= device_icon($device) ?></span>
-            <span class="device-name"><?= e($device['name']) ?></span>
-            <span class="device-meta"><?= e($device['ip']) ?> · <?= e($device['model'] ?: $device['type']) ?></span>
+            <span class="device-info">
+                <span class="device-name"><?= e($device['name']) ?></span>
+                <span class="device-meta"><?= e($device['ip']) ?> · <?= e($device['model'] ?: $device['type']) ?></span>
+            </span>
         </a>
+        <span class="device-metrics" data-metrics-for="<?= (int)$device['id'] ?>"></span>
         <?= status_badge($device) ?>
     </li>
     <?php

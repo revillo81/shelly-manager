@@ -43,4 +43,18 @@ require __DIR__ . '/../templates/tree_functions.php';
     </ul>
 <?php endif; ?>
 
+<script>
+window.metricLabels = {
+    power: <?= json_encode(t('metric_power')) ?>,
+    voltage: <?= json_encode(t('metric_voltage')) ?>,
+    current: <?= json_encode(t('metric_current')) ?>,
+    temperature: <?= json_encode(t('metric_temperature')) ?>,
+    humidity: <?= json_encode(t('metric_humidity')) ?>,
+    battery: <?= json_encode(t('metric_battery')) ?>
+};
+window.i18n = window.i18n || {};
+window.i18n.status_online = <?= json_encode(t('status_online')) ?>;
+window.i18n.status_offline = <?= json_encode(t('status_offline')) ?>;
+</script>
+
 <?php require __DIR__ . '/../templates/footer.php'; ?>

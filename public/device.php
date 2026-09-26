@@ -111,6 +111,7 @@ require __DIR__ . '/../templates/tree_functions.php';
             <button class="btn btn-small" id="btn-refresh-status" data-device-id="<?= (int)$device['id'] ?>"><?= e(t('refresh_status')) ?></button>
         </p>
         <div id="live-status" class="live-status"><em>–</em></div>
+        <div id="metrics-panel" class="metrics-panel"></div>
         <div id="control-panel" class="control-panel"></div>
 
         <h3><?= e(t('raw_info')) ?></h3>
@@ -132,6 +133,14 @@ window.i18n = {
     channel: <?= json_encode(t('channel')) ?>,
     status_online: <?= json_encode(t('status_online')) ?>,
     status_offline: <?= json_encode(t('status_offline')) ?>
+};
+window.metricLabels = {
+    power: <?= json_encode(t('metric_power')) ?>,
+    voltage: <?= json_encode(t('metric_voltage')) ?>,
+    current: <?= json_encode(t('metric_current')) ?>,
+    temperature: <?= json_encode(t('metric_temperature')) ?>,
+    humidity: <?= json_encode(t('metric_humidity')) ?>,
+    battery: <?= json_encode(t('metric_battery')) ?>
 };
 </script>
 
