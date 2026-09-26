@@ -1,0 +1,4 @@
+database/*.sqlite
+config/app_key.php
+*.log
+cookies*.txt
